@@ -3,7 +3,7 @@ class Habit {
   final String name;
   final String category;
   final String description;
-  final String frequency;
+  final String frequency; // 'daily' або 'weekly'
   final bool isFavorite;
   final DateTime createdAt;
   final List<DateTime> completedDates;
@@ -18,6 +18,25 @@ class Habit {
     required this.createdAt,
     this.completedDates = const [],
   });
+
+  // Обчислює кількість днів поспіль (стрік)
+  int get streak {
+    if (completedDates.isEmpty) return 0;
+    final sorted = List<DateTime>.from(completedDates)
+      ..sort((a, b) => b.compareTo(a));
+    int count = 1;
+    DateTime current = sorted.first;
+    for (int i = 1; i < sorted.length; i++) {
+      final diff = current.difference(sorted[i]).inDays;
+      if (diff == 1) {
+        count++;
+        current = sorted[i];
+      } else if (diff > 1) {
+        break;
+      }
+    }
+    return count;
+  }
 
   Habit copyWith({
     int? id,

@@ -16,6 +16,24 @@ class HabitProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String get selectedCategory => _selectedCategory;
 
+  // Статистика
+  int get totalHabits => _allHabits.length;
+  int get totalCompletedToday {
+    final now = DateTime.now();
+    return _allHabits
+        .where((h) => h.completedDates.any((d) =>
+            d.year == now.year && d.month == now.month && d.day == now.day))
+        .length;
+  }
+
+  double get completionRate {
+    if (totalHabits == 0) return 0;
+    return totalCompletedToday / totalHabits;
+  }
+
+  List<Habit> get favoriteHabits =>
+      _allHabits.where((h) => h.isFavorite).toList();
+
   List<String> get categories {
     final Set<String> set = {};
     for (var h in _allHabits) set.add(h.category);
@@ -113,7 +131,4 @@ class HabitProvider extends ChangeNotifier {
     final updated = habit.copyWith(completedDates: completed);
     await updateHabit(updated);
   }
-
-  List<Habit> get favoriteHabits =>
-      _allHabits.where((h) => h.isFavorite).toList();
 }

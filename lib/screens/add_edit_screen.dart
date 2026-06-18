@@ -67,7 +67,8 @@ class _AddEditScreenState extends State<AddEditScreen> {
       appBar: AppBar(
         title: Text(widget.habit == null ? 'Add Habit' : 'Edit Habit'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        // ← ДОДАЙ ЦЕЙ РЯДОК
         padding: const EdgeInsets.all(24.0),
         child: Form(
           key: _formKey,
@@ -105,16 +106,27 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 title: const Text('Favorite'),
                 value: _isFavorite,
                 onChanged: (v) => setState(() => _isFavorite = v),
+                activeColor: Colors.deepPurple,
               ),
-              const Spacer(),
+              const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _save,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
                   child: Text(widget.habit == null ? 'Create' : 'Update'),
                 ),
               ),
+              const SizedBox(
+                  height:
+                      40), // Додатковий відступ знизу, щоб кнопка не прилипала до клавіатури
             ],
           ),
         ),
